@@ -11,7 +11,23 @@ export default createSchema({
   // Then proceed to concatenate our document type
   // to the ones provided by any plugins that are installed
   types: schemaTypes.concat([
-    /* Your types here! */
+    {
+      name: 'author',
+      type: 'document',
+      title: 'Author',
+      fields: [
+        {
+          name: 'name',
+          title: 'Name',
+          type: 'string',
+        },
+        {
+          name: 'avatar',
+          title: 'Avatar',
+          type: 'image',
+        },
+      ],
+    },
     {
       name: 'blog',
       type: 'document',
@@ -21,6 +37,9 @@ export default createSchema({
           name: 'title',
           type: 'string',
           title: 'Title',
+          validation: (Rule) => {
+            return Rule.required().min(5);
+          },
         },
         {
           name: 'subtitle',
@@ -28,9 +47,60 @@ export default createSchema({
           title: 'Subtitle',
         },
         {
+          name: 'coverImage',
+          title: 'Cover Image',
+          type: 'image',
+        },
+        {
+          name: 'content',
+          title: 'Content',
+          type: 'array',
+          of: [
+            {
+              type: 'block',
+            },
+            {
+              type: 'image',
+              fields: [
+                {
+                  type: 'text',
+                  name: 'alt',
+                  title: 'Description',
+                  options: {
+                    isHighlighted: true,
+                  },
+                },
+              ],
+              options: {
+                hotspot: true,
+              },
+            },
+          ],
+        },
+        {
+          name: 'date',
+          title: 'Date',
+          type: 'datetime',
+          validation: (Rule) => {
+            return Rule.required();
+          },
+        },
+        {
+          name: 'author',
+          title: 'Author',
+          type: 'reference',
+          to: [{ type: 'author' }],
+          validation: (Rule) => {
+            return Rule.required();
+          },
+        },
+        {
           name: 'slug',
           type: 'slug',
           title: 'Slug',
+          validation: (Rule) => {
+            return Rule.required();
+          },
         },
       ],
     },

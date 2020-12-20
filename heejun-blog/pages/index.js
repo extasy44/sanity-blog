@@ -11,17 +11,29 @@ export default function Home({ blogs }) {
   return (
     <PageLayout>
       <AuthorIntro />
-      {JSON.stringify(blogs)}
+
       <hr />
 
       <Row className="mb-5">
-        <Col md="10">
+        {/*<Col md="10">
           <CardListItem />
-        </Col>
-
-        <Col md="4">
-          <CardItem />
-        </Col>
+  </Col> */}
+        {blogs.map((blog) => (
+          <Col key={blog.slug} md="4">
+            <CardItem
+              title={blog.title}
+              subtitle={blog.subtitle}
+              image={blog.coverImage}
+              date={blog.date}
+              author={blog.author}
+              slug={blog.slug}
+              link={{
+                href: `/blogs/[slug]`,
+                as: `/blogs/${blog.slug}`,
+              }}
+            />
+          </Col>
+        ))}
       </Row>
     </PageLayout>
   );
